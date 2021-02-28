@@ -1,0 +1,79 @@
+info:
+  title: Bank Account
+  description: Bank ACcount
+  version: 1.0.0
+swagger: '2.0'
+security: []
+
+paths:
+  /v1/customer:
+    post:
+      summary: Create Customer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/customer"
+      responses:
+        200:
+          description: Ok
+          schema:
+            $ref: '#/definitions/checkingAccount'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        500:
+          description: Internal Server Error
+
+definitions:
+  customer:
+    type: object
+    properties:
+      name:
+        type: "string"
+        example: "John"
+      lastName:
+        type: "string"
+        example: "Doe"
+      phoneNumber:
+        type: "string"
+        example: "1198732212"
+      email:
+        type: "string"
+        example: "john.doe@gmail.com"
+      address:
+        $ref: '#/definitions/address'
+
+  address:
+    type: object
+    properties:
+      city:
+        type: "string"
+        example: "São Paulo"
+      state:
+        type: "string"
+        enum: ["SP", "RJ", "MG", "ES"]
+      postalCode:
+        type: "string"
+        example: "03374-110"
+      info:
+        type: "string"
+        example: "Rua Coelho Lisboa, 223"
+
+  checkingAccount:
+    type: object
+    properties:
+      accountNumber:
+        type: "integer"
+        example: 63442
+      balanceAccount:
+        type: "integer"
+        example: 0
