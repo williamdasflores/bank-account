@@ -3,6 +3,7 @@ package br.com.bank.domain.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.jdbi.v3.core.mapper.Nested;
 
 import java.math.BigInteger;
 
@@ -11,11 +12,12 @@ import java.math.BigInteger;
 @ToString
 public class Customer {
     private Integer customerId;
-    private BigInteger documentNumber;
+    private Long documentNumber;
     private String firstName;
     private String lastName;
-    private BigInteger phoneNumber;
+    private Long phoneNumber;
     private String email;
     private Address address;
     private CheckingAccount checkingAccount;
+
 }

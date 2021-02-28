@@ -1,4 +1,4 @@
 package br.com.bank.application.controller;
 
-public class BankMapperRepresentation {
+public class BankControllerTest {
 }

@@ -1,8 +1,18 @@
 info:
   title: Bank Account
-  description: Bank ACcount
   version: 1.0.0
+consumes:
+  - application/json
+produces:
+  - application/json
 swagger: '2.0'
+securityDefinitions:
+  keystone:
+    description: OpenStack Keystone Authentication
+    type: apiKey
+    in: header
+    name: x-auth-token
+
 security: []
 
 paths:
@@ -30,6 +40,65 @@ paths:
           description: Not Found
         422:
           description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/errorRepresentation'
+        500:
+          description: Internal Server Error
+
+  /v1/transfer:
+    post:
+      summary: Transferring Between Accounts
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/transaction"
+      responses:
+        200:
+          description: Ok
+          schema:
+            $ref: '#/definitions/transfer'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/errorRepresentation'
+        500:
+          description: Internal Server Error
+  /v1/deposit:
+    post:
+      summary: Deposit
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/deposit"
+      responses:
+        200:
+          description: Ok
+          schema:
+            $ref: '#/definitions/transaction'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/errorRepresentation'
         500:
           description: Internal Server Error
 
@@ -37,6 +106,10 @@ definitions:
   customer:
     type: object
     properties:
+      documentNumber:
+        type: integer
+        format: int64
+        example: 93422283211
       name:
         type: "string"
         example: "John"
@@ -44,8 +117,9 @@ definitions:
         type: "string"
         example: "Doe"
       phoneNumber:
-        type: "string"
-        example: "1198732212"
+        type: "integer"
+        format: int64
+        example: 1198732212
       email:
         type: "string"
         example: "john.doe@gmail.com"
@@ -57,7 +131,7 @@ definitions:
     properties:
       city:
         type: "string"
-        example: "São Paulo"
+        example: "Sao Paulo"
       state:
         type: "string"
         enum: ["SP", "RJ", "MG", "ES"]
@@ -77,3 +151,71 @@ definitions:
       balanceAccount:
         type: "integer"
         example: 0
+
+  transfer:
+    type: object
+    properties:
+      sender:
+        $ref: '#/definitions/sender'
+      amount:
+        type: "integer"
+        example: 2000
+      payee:
+        $ref: '#/definitions/payee'
+
+  deposit:
+    type: object
+    properties:
+      payee:
+        $ref: '#/definitions/payee'
+      amount:
+        type: "integer"
+        example: 2000
+
+  sender:
+    type: object
+    properties:
+      name:
+        type: "string"
+        example: "John"
+      documentNumber:
+        type: "integer"
+        format: "int64"
+        example: 83757812390
+      accountNumber:
+        type: "integer"
+        example: 146754
+
+  payee:
+    type: object
+    properties:
+      name:
+        type: "string"
+        example: "John"
+      documentNumber:
+        type: "integer"
+        format: "int64"
+        example: 83757812390
+      accountNumber:
+        type: "integer"
+        example: 146754
+
+  transaction:
+    type: object
+    properties:
+      uuid:
+        type: "string"
+        example: "7d52ff18-8a54-49f8-b996-f93c9e69e326"
+      amount:
+        type: "integer"
+        example: 2000
+      dateTransaction:
+        type: "string"
+        example: "2021-02-28"
+
+  errorRepresentation:
+    type: object
+    properties:
+      message:
+        type: "string"
+        example: "Customer already registered"

@@ -7,7 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CheckingAccount {
-    private Integer accountNumber;
-    private Integer balance;
+public class LimitTransaction {
+    private Integer limitPerTransaction;
 }
