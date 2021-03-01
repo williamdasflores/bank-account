@@ -14,7 +14,7 @@ public class CheckingAccountMapper implements RowMapper<CheckingAccount> {
     public CheckingAccount map(ResultSet rs, StatementContext ctx) throws SQLException {
         CheckingAccount checkingAccount = new CheckingAccount();
         checkingAccount.setAccountNumber(rs.getInt("ACCOUNT_NUMBER"));
-        checkingAccount.setBalance(rs.getInt("BALANCE_ACCOUNT"));
+        checkingAccount.setBalance(rs.getBigDecimal("BALANCE_ACCOUNT"));
         return checkingAccount;
     }
 }

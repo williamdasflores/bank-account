@@ -1,8 +1,5 @@
 package br.com.bank.domain.domain;
 
-import br.com.bank.domain.domain.Address;
-import br.com.bank.domain.domain.CheckingAccount;
-import br.com.bank.domain.domain.Customer;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 

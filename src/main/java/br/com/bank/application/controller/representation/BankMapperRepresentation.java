@@ -3,15 +3,14 @@ package br.com.bank.application.controller.representation;
 import br.com.bank.domain.domain.Address;
 import br.com.bank.domain.domain.CheckingAccount;
 import br.com.bank.domain.domain.Customer;
-import br.com.bank.v1.representation.AddressRepresentation;
-import br.com.bank.v1.representation.CheckingAccountRepresentation;
-import br.com.bank.v1.representation.CustomerRepresentation;
+import br.com.bank.domain.domain.Transaction;
+import br.com.bank.v1.representation.*;
+import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
-
+@Component
 public class BankMapperRepresentation {
 
-    public static Customer mapperCustomer(CustomerRepresentation customerRepresentation,
+    public Customer mapperCustomer(CustomerRepresentation customerRepresentation,
                                                           AddressRepresentation addressRepresentation) {
         Address address = new Address();
         address.setCity(addressRepresentation.getCity());
@@ -30,10 +29,48 @@ public class BankMapperRepresentation {
         return customer;
     }
 
-    public static CheckingAccountRepresentation mapperCheckingAccountRepresentation(CheckingAccount checkingAccount) {
+    public CheckingAccountRepresentation mapperCheckingAccountRepresentation(CheckingAccount checkingAccount) {
         CheckingAccountRepresentation representation = new CheckingAccountRepresentation();
         representation.setAccountNumber(checkingAccount.getAccountNumber());
         representation.setBalanceAccount(checkingAccount.getBalance());
         return representation;
+    }
+
+    public Customer mapperSenderToCustomer(TransferRepresentation representation) {
+        Customer sender = new Customer();
+        sender.setDocumentNumber(representation.getSender().getDocumentNumber());
+        sender.setFirstName(representation.getSender().getName());
+        CheckingAccount account = new CheckingAccount();
+        account.setAccountNumber(representation.getSender().getAccountNumber());
+        sender.setCheckingAccount(account);
+        return sender;
+    }
+
+    public Customer mapperPayeeToCustomer(TransferRepresentation representation) {
+        Customer payee = new Customer();
+        payee.setDocumentNumber(representation.getPayee().getDocumentNumber());
+        payee.setFirstName(representation.getPayee().getName());
+        CheckingAccount account = new CheckingAccount();
+        account.setAccountNumber(representation.getPayee().getAccountNumber());
+        payee.setCheckingAccount(account);
+        return payee;
+    }
+
+    public TransactionRepresentation mapperTransactionRepresentation(Transaction transaction) {
+        TransactionRepresentation representation = new TransactionRepresentation();
+        representation.setUuid(transaction.getUuid());
+        representation.setDateTransaction(transaction.getDateTransaction().toString());
+        representation.setAmount(transaction.getAmount());
+        return representation;
+    }
+
+    public Customer mapperToDeposit(DepositRepresentation representation) {
+        Customer payee = new Customer();
+        payee.setDocumentNumber(representation.getPayee().getDocumentNumber());
+        payee.setFirstName(representation.getPayee().getName());
+        CheckingAccount account = new CheckingAccount();
+        account.setAccountNumber(representation.getPayee().getAccountNumber());
+        payee.setCheckingAccount(account);
+        return payee;
     }
 }

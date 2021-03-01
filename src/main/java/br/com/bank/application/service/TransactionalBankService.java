@@ -10,6 +10,8 @@ import br.com.bank.domain.service.BankService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 public class TransactionalBankService extends BankService {
     public TransactionalBankService(BankRepositoryOutputPort repository, Validation validation) {
@@ -25,13 +27,13 @@ public class TransactionalBankService extends BankService {
     @Override
     @Transactional(rollbackFor = { Exception.class, BankException.class})
     public Transaction transfer(Customer sender,
-                                Customer payee, Integer amount) throws BankException {
+                                Customer payee, BigDecimal amount) throws BankException {
         return super.transfer(sender, payee, amount);
     }
 
     @Override
     @Transactional(rollbackFor = { Exception.class, BankException.class})
-    public Transaction deposit(Integer amount, Customer payee) throws BankException {
+    public Transaction deposit(BigDecimal amount, Customer payee) throws BankException {
         return super.deposit(amount, payee);
     }
 }

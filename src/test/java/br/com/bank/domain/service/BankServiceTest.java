@@ -47,7 +47,7 @@ public class BankServiceTest {
     @Test
     public void createCustomerTest() throws BankException {
         CheckingAccount checkingAccount = new CheckingAccount();
-        checkingAccount.setBalance(0);
+        checkingAccount.setBalance(BigDecimal.ZERO);
         checkingAccount.setAccountNumber(87434);
 
         when(reposity.insertAddress(new Address())).thenReturn(1);
@@ -71,7 +71,7 @@ public class BankServiceTest {
         var result = service.createAccount(customer);
         Assertions.assertNotNull(result);
         Assertions.assertEquals(87434, result.getAccountNumber());
-        Assertions.assertEquals(0, result.getBalance());
+        Assertions.assertEquals(new BigDecimal("0"), result.getBalance());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class BankServiceTest {
         account.setAccountNumber(21313);
         sender.setCheckingAccount(account);
         when(reposity.checkAccountExist(anyLong(), anyInt())).thenReturn(0);
-        Assertions.assertThrows(BankException.class, () -> service.transfer(sender, payee, 1000));
+        Assertions.assertThrows(BankException.class, () -> service.transfer(sender, payee, new BigDecimal("1000")));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class BankServiceTest {
 
         when(reposity.checkAccountExist(anyLong(), anyInt())).thenReturn(1);
         when(reposity.getBalanceAccount(anyInt())).thenReturn(new BigDecimal("-1"));
-        Assertions.assertThrows(BankException.class, () -> service.transfer(sender, payee, 20000));
+        Assertions.assertThrows(BankException.class, () -> service.transfer(sender, payee, new BigDecimal("2000")));
     }
 
     @Test
@@ -124,10 +124,10 @@ public class BankServiceTest {
 
         when(reposity.checkAccountExist(anyLong(), anyInt())).thenReturn(1);
         when(reposity.getBalanceAccount(anyInt())).thenReturn(new BigDecimal("10"));
-        var result = service.transfer(sender, payee, 100000);
+        var result = service.transfer(sender, payee, new BigDecimal("1000"));
 
         Assertions.assertNotNull(result.getUuid());
-        Assertions.assertEquals(100000, result.getAmount());
+        Assertions.assertEquals(new BigDecimal("1000"), result.getAmount());
         Assertions.assertEquals(LocalDate.now(), result.getDateTransaction());
     }
 
@@ -141,7 +141,7 @@ public class BankServiceTest {
         account.setAccountNumber(21313);
         sender.setCheckingAccount(account);
         when(reposity.checkAccountExist(anyLong(), anyInt())).thenThrow(new RuntimeException("Error"));
-        Assertions.assertThrows(Exception.class, () -> service.transfer(sender, payee, 1000));
+        Assertions.assertThrows(Exception.class, () -> service.transfer(sender, payee, new BigDecimal("100")));
     }
 
     @Test
@@ -153,11 +153,11 @@ public class BankServiceTest {
         payee.setCheckingAccount(accountPayee);
 
         LimitTransaction limitTransaction = new LimitTransaction();
-        limitTransaction.setLimitPerTransaction(200000);
+        limitTransaction.setLimitPerTransaction(new BigDecimal("2000"));
 
         when(reposity.getLimitTransaction()).thenReturn(limitTransaction);
 
-        Assertions.assertThrows(BankException.class, () -> service.deposit(300000, payee));
+        Assertions.assertThrows(BankException.class, () -> service.deposit(new BigDecimal("3000"), payee));
     }
 
     @Test
@@ -169,11 +169,11 @@ public class BankServiceTest {
         payee.setCheckingAccount(accountPayee);
 
         LimitTransaction limitTransaction = new LimitTransaction();
-        limitTransaction.setLimitPerTransaction(200000);
+        limitTransaction.setLimitPerTransaction(new BigDecimal("2000"));
 
         when(reposity.getLimitTransaction()).thenReturn(limitTransaction);
         when(reposity.checkAccountExist(anyLong(), anyInt())).thenReturn(0);
-        Assertions.assertThrows(BankException.class, () -> service.deposit(30000, payee));
+        Assertions.assertThrows(BankException.class, () -> service.deposit(new BigDecimal("300"), payee));
     }
 
     @Test
@@ -185,14 +185,14 @@ public class BankServiceTest {
         payee.setCheckingAccount(accountPayee);
 
         LimitTransaction limitTransaction = new LimitTransaction();
-        limitTransaction.setLimitPerTransaction(200000);
+        limitTransaction.setLimitPerTransaction(new BigDecimal("2000"));
 
         when(reposity.getLimitTransaction()).thenReturn(limitTransaction);
         when(reposity.checkAccountExist(anyLong(), anyInt())).thenReturn(1);
 
-        var result = service.deposit(20000, payee);
+        var result = service.deposit(new BigDecimal("2000"), payee);
         Assertions.assertNotNull(result.getUuid());
-        Assertions.assertEquals(20000, result.getAmount());
+        Assertions.assertEquals(new BigDecimal("2000"), result.getAmount());
         Assertions.assertEquals(LocalDate.now(), result.getDateTransaction());
     }
 }

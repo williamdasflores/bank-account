@@ -11,14 +11,17 @@ import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 
+@Repository
 @UseClasspathSqlLocator
 public interface BankRepository extends BankRepositoryOutputPort {
 
     @SqlUpdate
     @GetGeneratedKeys
+    @Override
     Integer insertAddress(@BindBean Address address);
 
     @SqlUpdate
@@ -27,30 +30,38 @@ public interface BankRepository extends BankRepositoryOutputPort {
 
     @SqlUpdate
     @GetGeneratedKeys
+    @Override
     Integer insertCustomer(@BindBean Customer customer);
 
     @SqlQuery
+    @Override
     CheckingAccount getAccount(@Bind("accountNumber") Integer accountNumber);
 
     @SqlQuery
+    @Override
     LimitTransaction getLimitTransaction();
 
     @SqlQuery
+    @Override
     Integer checkDocumentExist(@Bind("document") Long documentNumber);
 
     @SqlQuery
+    @Override
     Integer checkAccountExist(@Bind("document") Long documentNumber,
-                              @Bind("accountNumber") Long accountNumber);
+                              @Bind("accountNumber") Integer accountNumber);
 
     @SqlUpdate
-    void debtAccountSender(@Bind("amount") Integer amount,
+    @Override
+    void debtAccountSender(@Bind("amount") BigDecimal amount,
                            @Bind("accountNumber") Integer accountNumber);
 
     @SqlUpdate
-    void creditAccountPayee(@Bind("amount") Integer amount,
+    @Override
+    void creditAccountPayee(@Bind("amount") BigDecimal amount,
                             @Bind("accountNumber") Integer accountNumber);
 
     @SqlQuery
+    @Override
     BigDecimal getBalanceAccount(@Bind("accountNumber") Integer accountNumber);
 
 }

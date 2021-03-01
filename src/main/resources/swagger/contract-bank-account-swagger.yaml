@@ -57,12 +57,12 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/transaction"
+            $ref: "#/definitions/transfer"
       responses:
         200:
           description: Ok
           schema:
-            $ref: '#/definitions/transfer'
+            $ref: '#/definitions/transaction'
         400:
           description: Bad Request
         404:
@@ -149,8 +149,9 @@ definitions:
         type: "integer"
         example: 63442
       balanceAccount:
-        type: "integer"
-        example: 0
+        type: "number"
+        format: "string"
+        example: "0.0"
 
   transfer:
     type: object
@@ -158,8 +159,9 @@ definitions:
       sender:
         $ref: '#/definitions/sender'
       amount:
-        type: "integer"
-        example: 2000
+        type: "number"
+        format: "string"
+        example: "2000.00"
       payee:
         $ref: '#/definitions/payee'
 
@@ -169,8 +171,9 @@ definitions:
       payee:
         $ref: '#/definitions/payee'
       amount:
-        type: "integer"
-        example: 2000
+        type: "number"
+        format: "string"
+        example: "2000.00"
 
   sender:
     type: object
@@ -207,8 +210,9 @@ definitions:
         type: "string"
         example: "7d52ff18-8a54-49f8-b996-f93c9e69e326"
       amount:
-        type: "integer"
-        example: 2000
+        type: "number"
+        format: "string"
+        example: "2000.00"
       dateTransaction:
         type: "string"
         example: "2021-02-28"

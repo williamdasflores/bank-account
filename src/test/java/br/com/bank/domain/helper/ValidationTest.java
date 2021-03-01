@@ -54,12 +54,12 @@ public class ValidationTest {
 
     @Test
     public void transactionLimitNotAllowedTest() {
-        Assertions.assertThrows(BankException.class, () -> validation.limitTransactionAllowed(3000, 1000));
+        Assertions.assertThrows(BankException.class, () -> validation.limitTransactionAllowed(new BigDecimal("2000"), new BigDecimal("1000")));
     }
 
     @Test
     public void transactionLimitAllowedTest() throws BankException {
-       var limitAllowed = validation.limitTransactionAllowed(100, 1000);
+       var limitAllowed = validation.limitTransactionAllowed(new BigDecimal("100"), new BigDecimal("1000"));
        Assertions.assertTrue(limitAllowed);
     }
 

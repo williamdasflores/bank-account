@@ -4,10 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
 public class CheckingAccount {
     private Integer accountNumber;
-    private Integer balance;
+    private BigDecimal balance;
 }

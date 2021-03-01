@@ -42,7 +42,7 @@ public class BankService {
     }
 
     public Transaction transfer(Customer sender,
-                                    Customer payee, Integer amount) throws BankException {
+                                    Customer payee, BigDecimal amount) throws BankException {
         try {
             validation.accountExist(repository.checkAccountExist(sender.getDocumentNumber(),
                     sender.getCheckingAccount().getAccountNumber()));
@@ -69,7 +69,7 @@ public class BankService {
         }
     }
 
-    public Transaction deposit(Integer amount, Customer payee) throws BankException {
+    public Transaction deposit(BigDecimal amount, Customer payee) throws BankException {
         try {
             var limitTransaction = repository.getLimitTransaction();
             validation.limitTransactionAllowed(amount,

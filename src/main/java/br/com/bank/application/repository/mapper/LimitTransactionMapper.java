@@ -13,7 +13,7 @@ public class LimitTransactionMapper implements RowMapper<LimitTransaction> {
     @Override
     public LimitTransaction map(ResultSet rs, StatementContext ctx) throws SQLException {
         LimitTransaction limitTransaction = new LimitTransaction();
-        limitTransaction.setLimitPerTransaction(rs.getInt("LIMIT_VALUE"));
+        limitTransaction.setLimitPerTransaction(rs.getBigDecimal("LIMIT_VALUE"));
         return limitTransaction;
     }
 }

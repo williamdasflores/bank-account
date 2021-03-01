@@ -24,9 +24,9 @@ public interface BankRepositoryOutputPort {
 
     Integer checkAccountExist(Long documentNumber, Integer accountNumber);
 
-    void debtAccountSender(Integer amount, Integer accountNumber);
+    void debtAccountSender(BigDecimal amount, Integer accountNumber);
 
-    void creditAccountPayee(Integer amount, Integer accountNumber);
+    void creditAccountPayee(BigDecimal amount, Integer accountNumber);
 
     BigDecimal getBalanceAccount(Integer accountNumber);
 }

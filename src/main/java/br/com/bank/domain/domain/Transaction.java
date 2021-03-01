@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -12,5 +13,5 @@ import java.time.LocalDate;
 public class Transaction {
     private String uuid;
     private LocalDate dateTransaction;
-    private Integer amount;
+    private BigDecimal amount;
 }

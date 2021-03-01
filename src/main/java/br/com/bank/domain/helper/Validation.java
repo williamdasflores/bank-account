@@ -21,12 +21,13 @@ public class Validation {
 
     public boolean accountExist(Integer qtdAccount) throws BankException {
         if (qtdAccount == 0) {
-            log.warn("Sender account does not exist!");
-            throw new BankException("Sender account does not exist!");
+            log.warn("Account does not exist!");
+            throw new BankException("Account does not exist!");
         }
 
         return true;
     }
+
 
     public void checkBalance(BigDecimal currentBalance) throws BankException {
         if (currentBalance.compareTo(BigDecimal.ZERO) < 0) {
@@ -35,8 +36,8 @@ public class Validation {
         }
     }
 
-    public boolean limitTransactionAllowed(Integer amount, Integer limitAmount) throws BankException {
-        if (amount > limitAmount) {
+    public boolean limitTransactionAllowed(BigDecimal amount, BigDecimal limitAmount) throws BankException {
+        if (amount.compareTo(limitAmount) > 0) {
             log.warn("Amount greater than limit amount(R$ 2.000)!");
             throw new BankException("Amount greater than limit amount(R$ 2.000)");
         }
