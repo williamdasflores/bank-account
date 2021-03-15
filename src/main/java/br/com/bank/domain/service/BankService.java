@@ -1,22 +1,27 @@
 package br.com.bank.domain.service;
 
-import br.com.bank.domain.domain.*;
+import br.com.bank.domain.domain.CheckingAccount;
+import br.com.bank.domain.domain.Customer;
+import br.com.bank.domain.domain.Transaction;
 import br.com.bank.domain.exception.BankException;
 import br.com.bank.domain.helper.Validation;
 import br.com.bank.domain.port.BankRepositoryOutputPort;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @Slf4j
 public class BankService {
     private final BankRepositoryOutputPort repository;
     private final Validation validation;
+
+    public BankService(BankRepositoryOutputPort repository,
+                       Validation validation) {
+        this.repository = repository;
+        this.validation = validation;
+    }
 
     public CheckingAccount createAccount(Customer customer) throws BankException{
         try {

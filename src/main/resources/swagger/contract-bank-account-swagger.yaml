@@ -109,10 +109,13 @@ definitions:
       documentNumber:
         type: integer
         format: int64
+        minimum: 11
+        maximum: 11
         example: 93422283211
       name:
         type: "string"
         example: "John"
+        minLength: 3
       lastName:
         type: "string"
         example: "Doe"
@@ -125,6 +128,7 @@ definitions:
         example: "john.doe@gmail.com"
       address:
         $ref: '#/definitions/address'
+    required: [documentNumber, name, lastName, address]
 
   address:
     type: object
@@ -141,6 +145,7 @@ definitions:
       info:
         type: "string"
         example: "Rua Coelho Lisboa, 223"
+    required: [postalCode]
 
   checkingAccount:
     type: object
@@ -148,10 +153,13 @@ definitions:
       accountNumber:
         type: "integer"
         example: 63442
+        minimum: 1
       balanceAccount:
         type: "number"
         format: "string"
         example: "0.0"
+        pattern: '(?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\,\d{1,2})?$'
+    required: [accountNumber, balanceAccount]
 
   transfer:
     type: object
@@ -162,8 +170,10 @@ definitions:
         type: "number"
         format: "string"
         example: "2000.00"
+        pattern: '(?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\,\d{1,2})?$'
       payee:
         $ref: '#/definitions/payee'
+    required: [sender, amount, payee]
 
   deposit:
     type: object
@@ -174,6 +184,8 @@ definitions:
         type: "number"
         format: "string"
         example: "2000.00"
+        pattern: '(?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\,\d{1,2})?$'
+    required: [payee, amount]
 
   sender:
     type: object
@@ -185,9 +197,13 @@ definitions:
         type: "integer"
         format: "int64"
         example: 83757812390
+        minimum: 11
+        maximum: 11
       accountNumber:
         type: "integer"
         example: 146754
+        minimum: 1
+    required: [name, documentNumber, accountNumber]
 
   payee:
     type: object
@@ -199,9 +215,13 @@ definitions:
         type: "integer"
         format: "int64"
         example: 83757812390
+        minimum: 11
+        maximum: 11
       accountNumber:
         type: "integer"
         example: 146754
+        minimum: 1
+    required: [name, documentNumber, accountNumber]
 
   transaction:
     type: object

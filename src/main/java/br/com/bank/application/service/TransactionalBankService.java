@@ -14,7 +14,9 @@ import java.math.BigDecimal;
 
 @Service
 public class TransactionalBankService extends BankService {
-    public TransactionalBankService(BankRepositoryOutputPort repository, Validation validation) {
+
+    public TransactionalBankService(final BankRepositoryOutputPort repository,
+                                    final Validation validation) {
         super(repository, validation);
     }
 

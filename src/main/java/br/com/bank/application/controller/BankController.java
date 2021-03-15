@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-@RequiredArgsConstructor
 public class BankController implements V1Api {
     private final BankService service;
     private final BankMapperRepresentation mapper;
+
+    public BankController(BankService service,
+                          BankMapperRepresentation mapper) {
+        this.service = service;
+        this.mapper = mapper;
+    }
 
     @Override
     public ResponseEntity<CheckingAccountRepresentation> v1CustomerPost(CustomerRepresentation body) {
