@@ -5,13 +5,22 @@ import br.com.bank.domain.domain.CheckingAccount;
 import br.com.bank.domain.domain.Customer;
 import br.com.bank.domain.domain.Transaction;
 import br.com.bank.v1.representation.*;
+import org.springframework.context.i18n.LocaleContext;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import javax.validation.Valid;
+import java.util.Locale;
 
 @Component
 public class BankMapperRepresentation {
 
-    public Customer mapperCustomer(CustomerRepresentation customerRepresentation,
-                                                          AddressRepresentation addressRepresentation) {
+    public Customer mapperCustomer(@Valid CustomerRepresentation customerRepresentation,
+                                                          @Valid AddressRepresentation addressRepresentation) {
         Address address = new Address();
         address.setCity(addressRepresentation.getCity());
         address.setState(addressRepresentation.getState().toString());
@@ -73,4 +82,5 @@ public class BankMapperRepresentation {
         payee.setCheckingAccount(account);
         return payee;
     }
+
 }

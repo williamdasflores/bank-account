@@ -110,8 +110,8 @@ definitions:
         type: integer
         format: int64
         minimum: 11
-        maximum: 11
         example: 93422283211
+        description: "Incorrect document number"
       name:
         type: "string"
         example: "John"
