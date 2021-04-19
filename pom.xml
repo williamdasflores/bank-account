@@ -120,6 +120,8 @@
 								<delegatePattern>true</delegatePattern>
 								<interfaceOnly>true</interfaceOnly>
 								<dateLibrary>java8</dateLibrary>
+								<performBeanValidation>true</performBeanValidation>
+								<useBeanValidation>true</useBeanValidation>
 							</configOptions>
 							<modelNameSuffix>Representation</modelNameSuffix>
 							<generateSupportingFiles>false</generateSupportingFiles>

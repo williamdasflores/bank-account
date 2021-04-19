@@ -1,13 +1,13 @@
 package br.com.bank.application.controller;
 
 import br.com.bank.application.controller.representation.BankMapperRepresentation;
+import br.com.bank.application.controller.representation.ErrorRepresentationHandler;
 import br.com.bank.domain.domain.Customer;
 import br.com.bank.domain.domain.Transaction;
 import br.com.bank.domain.exception.BankException;
 import br.com.bank.domain.service.BankService;
 import br.com.bank.v1.provider.api.V1Api;
 import br.com.bank.v1.representation.*;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class BankController implements V1Api {
     private final BankService service;
+    private final ErrorRepresentationHandler errorHandler;
     private final BankMapperRepresentation mapper;
 
     public BankController(BankService service,
+                          ErrorRepresentationHandler errorHandler,
                           BankMapperRepresentation mapper) {
         this.service = service;
+        this.errorHandler = errorHandler;
         this.mapper = mapper;
     }
 
@@ -41,13 +44,11 @@ public class BankController implements V1Api {
             log.info("Customer created!!");
             return ResponseEntity.ok(response);
         } catch (BankException e) {
-          log.warn("{}", e.getMessage(), e);
-          ErrorRepresentationRepresentation error = new ErrorRepresentationRepresentation();
-          error.setMessage(e.getMessage());
-          return new ResponseEntity(error, HttpStatus.UNPROCESSABLE_ENTITY);
+          log.warn("{}", e.getMessage());
+          return errorHandler.handleUnprocessableEntityError(e);
         } catch (Exception e) {
             log.error("Error creating customer: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return errorHandler.handleInternalServerError();
         }
     }
 
@@ -66,9 +67,7 @@ public class BankController implements V1Api {
             return ResponseEntity.ok(response);
         } catch (BankException e) {
             log.warn("{}", e.getMessage(), e);
-            ErrorRepresentationRepresentation error = new ErrorRepresentationRepresentation();
-            error.setMessage(e.getMessage());
-            return new ResponseEntity(error, HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (Exception e) {
             log.error("Error creating customer: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -90,9 +89,7 @@ public class BankController implements V1Api {
             return ResponseEntity.ok(response);
         } catch (BankException e) {
             log.warn("{}", e.getMessage());
-            ErrorRepresentationRepresentation error = new ErrorRepresentationRepresentation();
-            error.setMessage(e.getMessage());
-            return new ResponseEntity(error, HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (Exception e) {
             log.error("Error creating customer: {}", e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

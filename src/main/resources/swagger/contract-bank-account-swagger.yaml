@@ -36,14 +36,18 @@ paths:
             $ref: '#/definitions/checkingAccount'
         400:
           description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
         404:
           description: Not Found
         422:
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/errorRepresentation'
+            $ref: '#/definitions/error'
         500:
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
 
   /v1/transfer:
     post:
@@ -65,14 +69,19 @@ paths:
             $ref: '#/definitions/transaction'
         400:
           description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
         404:
           description: Not Found
         422:
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/errorRepresentation'
+            $ref: '#/definitions/error'
         500:
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
+
   /v1/deposit:
     post:
       summary: Deposit
@@ -93,39 +102,47 @@ paths:
             $ref: '#/definitions/transaction'
         400:
           description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
         404:
           description: Not Found
         422:
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/errorRepresentation'
+            $ref: '#/definitions/error'
         500:
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/error'
 
 definitions:
   customer:
     type: object
     properties:
       documentNumber:
-        type: integer
-        format: int64
-        minimum: 11
+        type: string
+        minLength: 11
+        maxLength: 14
+        pattern:  "[0-9]+"
+        x-pattern-message: "should be numbers"
         example: 93422283211
-        description: "Incorrect document number"
       name:
         type: "string"
         example: "John"
         minLength: 3
       lastName:
         type: "string"
+        minLength: 3
         example: "Doe"
       phoneNumber:
-        type: "integer"
-        format: int64
-        example: 1198732212
+        type: "string"
+        pattern: "[0-9]+"
+        example: "1198732212"
+        x-pattern-message: should be numbers
       email:
         type: "string"
         example: "john.doe@gmail.com"
+        pattern: (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
       address:
         $ref: '#/definitions/address'
     required: [documentNumber, name, lastName, address]
@@ -237,9 +254,14 @@ definitions:
         type: "string"
         example: "2021-02-28"
 
-  errorRepresentation:
-    type: object
-    properties:
-      message:
-        type: "string"
-        example: "Customer already registered"
+  error:
+    type: array
+    items:
+      type: object
+      properties:
+        error:
+          type: "string"
+          example: "BAD_REQUEST"
+        message:
+          type: "string"
+          example: "documentNumber must not be emptu"

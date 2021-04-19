@@ -5,16 +5,9 @@ import br.com.bank.domain.domain.CheckingAccount;
 import br.com.bank.domain.domain.Customer;
 import br.com.bank.domain.domain.Transaction;
 import br.com.bank.v1.representation.*;
-import org.springframework.context.i18n.LocaleContext;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.validation.Valid;
-import java.util.Locale;
 
 @Component
 public class BankMapperRepresentation {
@@ -29,10 +22,10 @@ public class BankMapperRepresentation {
 
         Customer customer = new Customer();
         customer.setAddress(address);
-        customer.setDocumentNumber(customerRepresentation.getDocumentNumber());
+        customer.setDocumentNumber(Long.valueOf(customerRepresentation.getDocumentNumber()));
         customer.setFirstName(customerRepresentation.getName());
         customer.setLastName(customerRepresentation.getLastName());
-        customer.setPhoneNumber(customerRepresentation.getPhoneNumber());
+        customer.setPhoneNumber(Long.valueOf(customerRepresentation.getPhoneNumber()));
         customer.setEmail(customerRepresentation.getEmail());
 
         return customer;

@@ -1,6 +1,7 @@
 package br.com.bank.application.controller;
 
 import br.com.bank.application.controller.representation.BankMapperRepresentation;
+import br.com.bank.application.controller.representation.ErrorRepresentationHandler;
 import br.com.bank.domain.domain.CheckingAccount;
 import br.com.bank.domain.domain.Customer;
 import br.com.bank.domain.exception.BankException;
@@ -34,16 +35,16 @@ public class BankControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new BankController(service, new BankMapperRepresentation());
+        controller = new BankController(service, new ErrorRepresentationHandler(), new BankMapperRepresentation());
     }
 
     @Test
     public void createCustomer() throws BankException {
         CustomerRepresentation representation = new CustomerRepresentation();
-        representation.setDocumentNumber(36499908484L);
+        representation.setDocumentNumber("36499908484");
         representation.setName("John");
         representation.setLastName("Doe");
-        representation.setPhoneNumber(11990875547L);
+        representation.setPhoneNumber("11990875547");
         representation.setEmail("email@email.com");
         AddressRepresentation addressRepresentation = new AddressRepresentation();
         addressRepresentation.setCity("Belo Horizonte");
@@ -66,10 +67,10 @@ public class BankControllerTest {
     @Test
     public void customerDocumentAlreadyExistTest() throws BankException {
         CustomerRepresentation representation = new CustomerRepresentation();
-        representation.setDocumentNumber(36499908484L);
+        representation.setDocumentNumber("36499908484");
         representation.setName("John");
         representation.setLastName("Doe");
-        representation.setPhoneNumber(11990875547L);
+        representation.setPhoneNumber("11990875547");
         representation.setEmail("email@email.com");
         AddressRepresentation addressRepresentation = new AddressRepresentation();
         addressRepresentation.setCity("Belo Horizonte");
@@ -90,10 +91,10 @@ public class BankControllerTest {
     @Test
     public void errorCreateCustomerTest() throws BankException {
         CustomerRepresentation representation = new CustomerRepresentation();
-        representation.setDocumentNumber(36499908484L);
+        representation.setDocumentNumber("36499908484");
         representation.setName("John");
         representation.setLastName("Doe");
-        representation.setPhoneNumber(11990875547L);
+        representation.setPhoneNumber("11990875547");
         representation.setEmail("email@email.com");
         AddressRepresentation addressRepresentation = new AddressRepresentation();
         addressRepresentation.setCity("Belo Horizonte");
